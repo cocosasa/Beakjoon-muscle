@@ -1,32 +1,58 @@
-N, K = map(int,input().split())
+class Node:
+    def __init__(self, key = None,prev = None, next = None):
+        self.key = key
+        self.next = self
+        self.prev = self
 
-ans = []
-linked_list = []
-if N == 1 :
-    linked_list = [[0, 0]]
-else :
-    for n in range(N) :
-        if n == 0 :
-            linked_list.append([N-1,n+1])
-        elif n != N-1 :
-            linked_list.append([n-1,n+1])
-        else :
-            linked_list.append([n-1,0])
+    def __str__(self):
+        return str(self.key)
 
-count = 0
-idx = K-1
+class DoubleLinkedList:
+    def __init__(self):
+        self.head = Node()
+        self.tail = Node()
+        self.size = 0
 
-while len(ans) != N :
-    next_node = linked_list[idx][1]
-    
-    if count % (K) == 0:
-        ans.append(idx+1)
-        before_node = linked_list[idx][0]
-        linked_list[before_node][1] = next_node
-        linked_list[next_node][0] = before_node
-
-    idx = next_node
-    count += 1
-rst = '<'+', '.join(list(map(str,ans)))+'>'
-print(rst)
+    def __len__(self):
+        return self.size
         
+    def insert(self,key):
+        new_node = Node(key)
+        if self.size == 0 :
+            self.head = new_node
+            self.tail = new_node
+            self.tail.prev = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
+            self.tail.next = self.head
+            self.head.prev = self.tail
+        self.size += 1
+
+    def delete(self, x):
+        x.prev.next, x.next.prev = x.next, x.prev
+        self.size -= 1
+
+        return x.key
+
+    
+    def print_list(self,N,K):
+        l = []
+        p = self.head.prev
+        for _ in range(N):
+            for _ in range(K):
+                p = p.next
+
+            l.append(self.delete(p))
+        return l
+
+N,K = map(int, input().split())
+L = DoubleLinkedList()
+
+for i in range(1,N+1) :
+    L.insert(i)
+
+ans = L.print_list(N,K)
+rst = '<'+', '.join(map(str,ans))+'>'
+print(rst)
