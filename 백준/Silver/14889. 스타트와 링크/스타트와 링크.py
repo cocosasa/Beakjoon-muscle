@@ -3,17 +3,16 @@ from itertools import combinations
 N = int(input())
 people = list(range(N))
 adj_matrix = [list(map(int, input().split())) for _ in range(N)]
-combi = list(map(set, combinations(people, N // 2)))
+combi = list(combinations(people, N // 2))
 
 _min = 9999
 
 for com in combi[:len(combi) // 2]:
-    team1 = list(com)
-    team2 = list(set(people) - com)
+    team2 = list(set(people) - set(com))
     team1_synergy = 0
     team2_synergy = 0
-    for i in team1:
-        for person in team1:
+    for i in com:
+        for person in com:
             if person == i:
                 continue
             team1_synergy += adj_matrix[i][person]
