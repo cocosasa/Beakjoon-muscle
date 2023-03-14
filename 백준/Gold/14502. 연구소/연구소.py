@@ -2,17 +2,17 @@ from itertools import combinations
 from collections import deque
 
 def bfs() :
-    visited = []
+    visited = [[0]*(M+2) for _ in range(N+2)]
     safe_count = SAFE
     for vi, vj in Q :
-        visited.append((vi,vj))
+        visited[vi][vj] = 1
     while Q :
         si, sj = Q.popleft()
         for di, dj in d :
             ni, nj = si + di , sj + dj
-            if lab[ni][nj] == 0 and (ni,nj) not in visited :
+            if lab[ni][nj] == 0 and visited[ni][nj] != 1 :
                 Q.append((ni,nj))
-                visited.append((ni,nj))
+                visited[ni][nj] = 1
                 safe_count -= 1
     return safe_count
 
