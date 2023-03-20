@@ -13,7 +13,6 @@ for i in range(N) :
 
 while cnt> 0 :
     visited = [[0]*M for i in range(N)]
-    melt = []
     queue = deque()
     queue.append((0,0))
     while queue :
@@ -21,22 +20,17 @@ while cnt> 0 :
 
         for di, dj in ((0,1),(1,0),(0,-1),(-1,0)) :
             ni,nj = ci + di, cj + dj
-            if 0<=ni<N and 0<= nj < M and arr[ni][nj] != 1 and visited[ni][nj] == 0 :
-                queue.append((ni,nj))
-                visited[ni][nj] = 1
-                arr[ni][nj] = time
+            if 0<=ni<N and 0<= nj < M : 
+                if arr[ni][nj] != 1 and visited[ni][nj] == 0 :
+                    queue.append((ni,nj))
+                    visited[ni][nj] = 5
+                    arr[ni][nj] = time
+                elif arr[ni][nj] == 1 :
+                    visited[ni][nj] += 1
     for i in range(N) :
         for j in range(M) :
-            if arr[i][j] == 1 :
-                air = 0
-                for di, dj in ((0,1),(1,0),(0,-1),(-1,0)) :
-                    ni,nj = i + di, j + dj
-                    if arr[ni][nj] == time :
-                        air += 1
-                if air >= 2 :
-                    melt.append((i,j))
-    for mi, mj in melt :
-        arr[mi][mj] = time
-        cnt -= 1
+            if 1 < visited[i][j] < 5 :
+                arr[i][j] = time
+                cnt -= 1
     time +=1
 print(time - 2)
