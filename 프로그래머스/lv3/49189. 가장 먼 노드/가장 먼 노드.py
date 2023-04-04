@@ -1,0 +1,25 @@
+from collections import deque
+
+def solution(n, edge):
+    answer = 0
+    adjL = [[] for _ in range(n+1)]
+    visited = [0] * (n+1)
+
+    for s, e in edge :
+        adjL[s].append(e)
+        adjL[e].append(s)
+    
+    visited[1] = 1
+    q = deque([1])
+    
+    while q :
+        v = q.popleft()
+        for next in adjL[v] :
+            if not visited[next]:
+                visited[next] = visited[v] + 1
+                q.append(next)
+                
+    max_v = max(visited)
+    answer = visited.count(max_v)
+    
+    return answer
