@@ -10,10 +10,8 @@ for x, y, d, g in info:
     curve = [d]
 
     for year in range(g):
-        new = []
-        for i in curve[::-1]:
-            new.append((i+1) % 4)
-        curve += new
+        curve += [(i+1)%4 for i in curve[::-1]]
+
     arr[x][y] = 1
     for d in curve:
         dy, dx = _dir[d]
@@ -24,9 +22,7 @@ for x, y, d, g in info:
 
 for i in range(N-1) :
     for j in range(N-1) :
-        if arr[i][j] :
-            if arr[i][j+1] and arr[i+1][j] and arr[i+1][j+1] :
-                ans += 1
+        if arr[i][j] and arr[i][j+1] and arr[i+1][j] and arr[i+1][j+1] :
+            ans += 1
 
-# print(*arr, sep='\n')
 print(ans)
